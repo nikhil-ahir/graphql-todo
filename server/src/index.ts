@@ -4,6 +4,7 @@ import { Prisma } from './generated/prisma'
 const { default: costAnalysis } = require('graphql-cost-analysis')
 import { importSchema } from 'graphql-import'
 import { makeExecutableSchema } from 'graphql-tools'
+import resolvers from "./resolver"
 
 const prisma = new Prisma({
     endpoint: "http://localhost:4467",
@@ -11,14 +12,14 @@ const prisma = new Prisma({
     debug: false, // log all GraphQL queries & mutations
 });
 
-const resolvers = {
-    Query: {
-        todos: async (parent, args, ctx, info) => {
-          console.log("args::", args)
-          return await ctx.db.query.todoes({}, info)
-        },
-    },
-}
+// const resolvers = {
+//     Query: {
+//         todos: async (parent, args, ctx, info) => {
+//           console.log("args::", args)
+//           return await ctx.db.query.todoes({}, info)
+//         },
+//     },
+// }
 
 const typeDefs = importSchema(path.join(__dirname, 'schema.graphql')) 
 const schema = makeExecutableSchema({ typeDefs, resolvers })
@@ -30,8 +31,8 @@ const server = new GraphQLServer({
     resolverValidationOptions: {
         requireResolversForResolveType: false
     },
-    context: req => ({
-        ...req,
+    context: request => ({
+        request,
         db: prisma,
     }),
 });

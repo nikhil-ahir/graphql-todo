@@ -4,8 +4,9 @@ type Query {
     todos(limit: Int!): [Todo!]!
 }
 
-# type Mutation {
-# }
+type Mutation {
+    todos(limit: Int!): [Todo!]! # need to change this 
+}
 
 # type Subscription {
 # }
