@@ -1,0 +1,12 @@
+type Todo {
+  id: ID! @id
+  description: String!
+  isCompleted: Boolean!
+  user: User! @relation(name: "UserToTodo")
+}
+
+type User {
+  id: ID! @id
+  name: String!
+  todo: [Todo!]! @relation(name: "UserToTodo")
+}

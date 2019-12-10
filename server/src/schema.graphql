@@ -1,0 +1,11 @@
+# import Todo from "./generated/prisma.graphql"
+
+type Query {
+    todos(limit: Int!): [Todo!]!
+}
+
+# type Mutation {
+# }
+
+# type Subscription {
+# }
