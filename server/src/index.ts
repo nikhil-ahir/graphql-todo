@@ -5,6 +5,7 @@ const { default: costAnalysis } = require('graphql-cost-analysis')
 import { importSchema } from 'graphql-import'
 import { makeExecutableSchema } from 'graphql-tools'
 import resolvers from "./resolver"
+import { formatError } from "apollo-errors";
 
 const prisma = new Prisma({
     endpoint: "http://localhost:4467",
@@ -26,7 +27,7 @@ const schema = makeExecutableSchema({ typeDefs, resolvers })
 
 const server = new GraphQLServer({
     // typeDefs: path.join(__dirname, 'schema.graphql'), //use makeExecutableSchema instead
-    // resolvers, //use makeExecutableSchema instead
+    // resolvers, //use makeExecutableSchema instead,
     schema,
     resolverValidationOptions: {
         requireResolversForResolveType: false
@@ -38,6 +39,7 @@ const server = new GraphQLServer({
 });
 
 server.start({
+    formatError,
     validationRules: (req) => [
       costAnalysis({
         variables: req.query.variables,
